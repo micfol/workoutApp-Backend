@@ -4,7 +4,8 @@ const userSchema = new Schema(
   {
     username: { type: String, unique: true, required: true },
     password: { type: String, required: true },
-    email: String
+    email: String,
+    workoutEntries: [{ type: Schema.Types.ObjectId, ref: 'Workouts' }]
   },
   {
     timestamps: true,

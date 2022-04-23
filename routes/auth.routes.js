@@ -2,9 +2,9 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
 const { response } = require("../app");
-// const jwt = require("jsonwebtoken");
-// const jsonwebtoken = require("jsonwebtoken");
-// const { isAuthenticated } = require("../middleware/jwt.middleware");
+const jwt = require("jsonwebtoken");
+const jsonwebtoken = require("jsonwebtoken");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 const router = express.Router();
 
@@ -60,14 +60,14 @@ router.post("/login", async (req, res) => {
         return;
     }
 
-    // // Get/Create an authentication token
-    // const authToken = jwt.sign(
-    //     { _id: foundUser._id, email: foundUser.email, username: foundUser.username },
-    //     process.env.TOKEN_SECRET,
-    //     { algorithm: "HS256", expiresIn: "6h" }
-    // )
+    // Get/Create an authentication token
+    const authToken = jwt.sign(
+        { _id: foundUser._id, email: foundUser.email, username: foundUser.username },
+        process.env.TOKEN_SECRET,
+        { algorithm: "HS256", expiresIn: "6h" }
+    )
 
-    // res.status(200).json({ authToken });
+    res.status(200).json({ authToken });
 
 });
 
