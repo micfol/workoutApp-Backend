@@ -40,8 +40,6 @@ router.get("/exercisetype", async (req, res) => {
     }
 });
 
-
-
 // GET Route for the array of exercises
 router.get("/workout", async (req, res) => {
     try {
