@@ -1,28 +1,17 @@
 const router = require("express").Router();
 const { async } = require("jshint/src/prod-params");
 const Workout = require("../models/Workout.model");
+const ExerciseType = require("../models/ExerciseType.model");
 
-// GET Route for all workouts
-router.get("/workout", async (req, res) => {
+// POST Route to create Exercise Types
+router.post("/exercisetype", async (req, res) => {
     try {
-        const response = await Workout.find().populate('User');
-        // populate function?
-        res.status(200).json(response);
-    }
-    catch (e) {
-        res.status(500).json({ message: e });
-    }
-});
-
-// Post Route to Create Workout Entry
-router.post("/workout", async (req, res) => {
-    try {
-        const { workoutType, exerciseName, weightPerRep, setsArray } = req.body;
-        if (!workoutType || !exerciseName || !weightPerRep || setsArray.length > 5) {
-            res.status(400).json({ message: "Missing Workout Information"})
+        const { exerciseName } = req.body;
+        if (!exerciseName) {
+            res.status(400).json({ message: "Missing Exercise Name" })
             return;
         }
-        const response = await Workout.create({ workoutType, exerciseName, weightPerRep, setsArray, allSetsSuccess, totalWeightLifted});
+        const response = await ExerciseType.create({exerciseName});
         res.status(200).json(response);
     }
     catch (e) {
@@ -30,28 +19,63 @@ router.post("/workout", async (req, res) => {
     }
 });
 
-// Post Route to Create Workout Detail Entry
-// router.post("/workoutdetail", async (req, res) => {
-//     try {
-//         const { exerciseName, setsCompleted, repsPerSet, weightPerRep, workoutId } = req.body;
-//         const response = await WorkoutDetail.create({ exerciseName, setsCompleted, repsPerSet, weightPerRep });
-//         const workoutDetailResponse = await Workout.findByIdAndUpdate(workoutId, 
-//             { $push: {WorkoutDetail: response._id}},
-//             { new: true });
-//         res.status(200).json(workoutDetailResponse);
-//     }
-//     catch {
-//         res.status(500).json({ message: e });
-//     }
-// });
-
-// GET One Workout
-router.get("/workouts/:workoutId", async (req, res) => {
+// GET Route to get Exercise Type
+router.get("/exercisetype/:exerciseNameId", async (req, res) => {
     try {
-        const response = await Workout.findById(req.params.workoutId).populate("workoutDetails");
+        const response = await ExerciseType.findById(req.params.exerciseNameId);
         res.status(200).json(response);
     }
     catch {
         res.status(500).json({ message: e });
     }
 });
+
+router.get("/exercisetype", async (req, res) => {
+    try {
+        const response = await ExerciseType.find();
+        res.status(200).json(response);
+    }
+    catch {
+        res.status(500).json({ message: e });
+    }
+});
+
+
+
+// GET Route for the array of exercises
+router.get("/workout", async (req, res) => {
+    try {
+        const response = await Workout.find();
+        res.status(200).json(response);
+    }
+    catch (e) {
+        res.status(500).json({ message: e });
+    }
+})
+
+
+
+// GET Route for all workouts
+// router.get("/workout", async (req, res) => {
+//     try {
+//         const response = await Workout.find().populate('User');
+//         // populate function?
+//         res.status(200).json(response);
+//     }
+//     catch (e) {
+//         res.status(500).json({ message: e });
+//     }
+// });
+
+// GET One Workout
+// router.get("/workouts/:workoutId", async (req, res) => {
+//     try {
+//         const response = await Workout.findById(req.params.workoutId).populate("workoutDetails");
+//         res.status(200).json(response);
+//     }
+//     catch {
+//         res.status(500).json({ message: e });
+//     }
+// });
+
+module.exports = router;

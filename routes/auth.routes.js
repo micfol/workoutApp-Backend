@@ -71,9 +71,9 @@ router.post("/login", async (req, res) => {
 
 });
 
-// // Route to help keep a user logged in when a page is refreshed
-// router.get("/verify", isAuthenticated, (req, res) => {
-//     res.status(200).json(req.payload);
-// });
+// Route to help keep a user logged in when a page is refreshed
+router.get("/verify", isAuthenticated, (req, res) => {
+    res.status(200).json(req.payload);
+});
 
 module.exports = router;

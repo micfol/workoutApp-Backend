@@ -1,19 +1,18 @@
-// //Json Web Token (jwt) - also a dependency in the package.json file
-// const jwt = require("express-jwt");
+//Json Web Token (jwt) - also a dependency in the package.json file
+const jwt = require("express-jwt");
 
-// const isAuthenticated = jwt ({
-//     secret: process.env.TOKEN_SECRET,
-//     algorithms: ["HS256"],
-//     requestProperty: "payload",
-//     getToken: getTokenFromHeaders
-// });
+const isAuthenticated = jwt({
+    secret: process.env.TOKEN_SECRET,
+    algorithms: ["HS256"],
+    requestProperty: "payload",
+    getToken: getTokenFromHeaders
+});
 
-// function getTokenFromHeaders(req) {
-//     if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
-//         const token = req.headers.authorization.split(" ")[1];
-//         return token;
-//     }
-//     return null;
-// }
+function getTokenFromHeaders(req) {
+    if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
+        const token = req.headers.authorization.split(" ")[1];
+        return token;
+    }
+}
 
-// module.exports = { isAuthenticated };
+module.exports = { isAuthenticated };

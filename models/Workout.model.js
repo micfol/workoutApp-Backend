@@ -1,7 +1,20 @@
 const { Schema, model } = require("mongoose");
 
-const workoutsSchema = new Schema ({
-    workout: {
+const workoutsSchema = new Schema(
+  {
+    exercises: [{
+      exerciseType:  { type: Schema.Types.ObjectId, ref: "ExerciseType" },
+      weight: Number
+    }
+    ]},
+  {
+ timestamp: true
+  }
+);
+
+module.exports = model("Workouts", workoutsSchema);
+
+/*  workout: {
         exerciseDetail: {
             workoutType: String,
             exerciseName: String,
@@ -12,11 +25,4 @@ const workoutsSchema = new Schema ({
         }
     },
     totalWeightLifted: Number,
-    user: { type: Schema.Types.ObjectId, ref: "User" }
-    },
-    {
-    timestamps: true,
-    }
-);
-
-module.exports = model("Workouts", workoutsSchema);
+    user: { type: Schema.Types.ObjectId, ref: "User" } */
