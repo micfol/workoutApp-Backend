@@ -7,7 +7,8 @@ const userSchema = new Schema(
     lastName: { type: String, required: true },
     password: { type: String, required: true },
     email: String,
-    workoutEntries: [{ type: Schema.Types.ObjectId, ref: 'Workouts' }]
+    workoutEntries: [{ type: Schema.Types.ObjectId, ref: 'Workouts' }],
+    exerciseEntries: [{ type: Schema.Types.ObjectId, ref: 'ExerciseType' }]
   },
   {
     timestamps: true,

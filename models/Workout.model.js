@@ -2,11 +2,14 @@ const { Schema, model } = require("mongoose");
 
 const workoutsSchema = new Schema(
   {
-    exercises: [{
-      exerciseType:  { type: Schema.Types.ObjectId, ref: "ExerciseType" },
-      weight: Number
-    }
-    ]},
+        isWorkoutA: Boolean,
+        exercises: [{
+            exerciseType:  { type: Schema.Types.ObjectId, ref: "ExerciseType" },
+        }],
+        totalWeghtLifted: Number,
+        user: { type: Schema.Types.ObjectId, ref: "User" }
+    },
+        
   {
  timestamp: true
   }
