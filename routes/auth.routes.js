@@ -11,10 +11,10 @@ const router = express.Router();
 // Route to create a new User
 router.post("/signup", async (req, res) =>{
     try {
-        const { username, password, email } = req.body;
+        const { username, firstName, lastName,  password, email } = req.body;
 
         // Validation to ensure all form fields are entered by the user
-        if (!username || !password || !email) {
+        if (!username || !firstName|| !lastName || !password || !email) {
             res.status(400).json({ message: "Missing required form fields"});
             return;
         }
@@ -30,9 +30,9 @@ router.post("/signup", async (req, res) =>{
         const hashedPassword = bcrypt.hashSync(password, salt);
 
         // Creates the User entry for the backend
-        const createdUser = await User.create({ email, username, password: hashedPassword });
+        const createdUser = await User.create({ email, firstName, lastName, username, password: hashedPassword });
 
-        res.status(200).json({ email: createdUser.email, username: createdUser.username, _id: createdUser._id })
+        res.status(200).json({ email: createdUser.email, firstName: createdUser.firstName, lastName: createdUser.lastName, username: createdUser.username, _id: createdUser._id })
     }
 
     catch (e) {
