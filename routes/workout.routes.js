@@ -53,12 +53,12 @@ router.get("/workout", async (req, res) => {
 
 router.post("/exerciseentry", async (req, res) => {
     try {
-        const { exerciseName, sets, weight } = req.body;
+        const { exerciseName, sets, weight, user } = req.body;
         if (!exerciseName || !sets || !weight) {
             res.status(400).json({ message: "Incomplete Exercise Data" })
             return;
         }
-        const response = await ExerciseType.create({exerciseName, sets, weight});
+        const response = await ExerciseType.create({exerciseName, sets, weight, user});
         res.status(200).json(response);
     }
     catch (e) {
