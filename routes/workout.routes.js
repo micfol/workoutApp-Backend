@@ -50,32 +50,23 @@ router.get("/workout", async (req, res) => {
     }
 });
 
-router.post("/x-exerciseentry", async (req, res) => {
-    try {
-        const { exerciseName, sets, weight, user } = req.body;
-        if (!exerciseName || !sets || !weight) {
-            res.status(400).json({ message: "Incomplete Exercise Data" })
-            return;
-        }
-        const response = await ExerciseType.create({ exerciseName, sets, weight });
-        res.status(200).json(response);
-    }
-    catch (e) {
-        res.status(500).json({ message: e })
-    }
-});
 
 router.post("/exerciseentry", async (req, res) => {
     try {
-        const { workoutType, workoutExercises } = req.body;
+        const { workoutType, workoutExercises, user } = req.body;
+        
+        workoutExercises.forEach((x) => { 
+            x.user = user         // Adds _id to each exercise object.
+        });
 
-        // if (!exerciseName || !sets || !weight) {
-        //     res.status(400).json({ message: "Incomplete Exercise Data" })
-        //     return;
-        // }
-        const response = await ExerciseType.create(workoutExercises, {new: true});
-        console.log(response)
-        res.status(200).json(response);
+        const responseExercise = await ExerciseType.create(workoutExercises, {new: true}); // Creates 3 new exercies entries
+        
+        const exerciseIDs = responseExercise.map((x) => x._id); //returns array of the 3 created entry _ids.
+        const  isWorkoutA = (workoutType === 'workoutA');
+
+        
+        const responseWorkout = await Workout.create({isWorkoutA, exercises: exerciseIDs, totalWeghtLifted: 0, user});
+        res.status(200).json({responseExercise, responseWorkout})
     }
     catch (e) {
         res.status(500).json({ message: e })

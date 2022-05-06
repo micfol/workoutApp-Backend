@@ -3,9 +3,8 @@ const { Schema, model } = require("mongoose");
 const workoutsSchema = new Schema(
   {
         isWorkoutA: Boolean,
-        exercises: [{
-            exerciseType:  { type: Schema.Types.ObjectId, ref: "ExerciseType" },
-        }],
+        exercises: [{ type: Schema.Types.ObjectId, ref: "ExerciseType" },
+        ],
         totalWeghtLifted: Number,
         user: { type: Schema.Types.ObjectId, ref: "User" }
     },
