@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { async } = require("jshint/src/prod-params");
 const Workout = require("../models/Workout.model");
 const ExerciseType = require("../models/ExerciseType.model");
 
