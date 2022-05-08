@@ -63,7 +63,10 @@ router.post("/exerciseentry", async (req, res) => {
         
         const exerciseIDs = responseExercise.map((x) => x._id); //returns array of the 3 created entry _ids.\
         
-        const responseWorkout = await Workout.create({isWorkoutA, exercises: exerciseIDs, totalWeghtLifted: 0, user});
+        const totalWeightLifted = workoutExercises.map(exercise => exercise.sets)
+
+        console.log('totalWeightLifted', totalWeightLifted)
+        const responseWorkout = await Workout.create({isWorkoutA, exercises: exerciseIDs, totalWeightLifted: 0, user});
         res.status(200).json({responseExercise, responseWorkout})
     }
     catch (e) {
