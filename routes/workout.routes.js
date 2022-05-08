@@ -53,7 +53,7 @@ router.get("/workout", async (req, res) => {
 
 router.post("/exerciseentry", async (req, res) => {
     try {
-        const { workoutType, workoutExercises, user } = req.body;
+        const { isWorkoutA, workoutExercises, user } = req.body;
         
         workoutExercises.forEach((x) => { 
             x.user = user         // Adds _id to each exercise object.
@@ -61,9 +61,7 @@ router.post("/exerciseentry", async (req, res) => {
 
         const responseExercise = await ExerciseType.create(workoutExercises, {new: true}); // Creates 3 new exercies entries
         
-        const exerciseIDs = responseExercise.map((x) => x._id); //returns array of the 3 created entry _ids.
-        const  isWorkoutA = (workoutType === 'workoutA');
-
+        const exerciseIDs = responseExercise.map((x) => x._id); //returns array of the 3 created entry _ids.\
         
         const responseWorkout = await Workout.create({isWorkoutA, exercises: exerciseIDs, totalWeghtLifted: 0, user});
         res.status(200).json({responseExercise, responseWorkout})
