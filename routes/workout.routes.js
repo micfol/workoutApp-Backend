@@ -74,4 +74,18 @@ router.post("/exerciseentry", async (req, res) => {
     }
 });
 
+router.get("/progress/:id", async (req, res) => {
+    try {
+        const id = req.params.id
+        const response = await Workout.countDocuments({ user: id })
+        const totalWorkouts = response/36 * 100;
+        console.log('totalWorkouts :>> ', totalWorkouts);
+        res.status(200).json(totalWorkouts);
+    }
+    catch (e) {
+        res.status(500).json({ message: e });
+    }
+});
+
+
 module.exports = router;
