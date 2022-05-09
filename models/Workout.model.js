@@ -14,16 +14,3 @@ const workoutsSchema = new Schema(
 );
 
 module.exports = model("Workouts", workoutsSchema);
-
-/*  workout: {
-        exerciseDetail: {
-            workoutType: String,
-            exerciseName: String,
-            weightPerRep: Number,
-            setsArray: [Number],
-            //double check how this turns out
-            allSetsSuccess: Boolean
-        }
-    },
-    totalWeightLifted: Number,
-    user: { type: Schema.Types.ObjectId, ref: "User" } */

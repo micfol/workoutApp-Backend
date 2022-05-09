@@ -17,6 +17,9 @@ app.use("/api", authRoutes);
 const workoutRoutes = require("./routes/workout.routes");
 app.use("/api", workoutRoutes);
 
+const educationRoutes = require("./routes/education.routes");
+app.use("/api", educationRoutes);
+
 require("./error-handling")(app);
 
 module.exports = app;

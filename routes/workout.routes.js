@@ -74,29 +74,4 @@ router.post("/exerciseentry", async (req, res) => {
     }
 });
 
-
-
-// GET Route for all workouts
-// router.get("/workout", async (req, res) => {
-//     try {
-//         const response = await Workout.find().populate('User');
-//         // populate function?
-//         res.status(200).json(response);
-//     }
-//     catch (e) {
-//         res.status(500).json({ message: e });
-//     }
-// });
-
-// GET One Workout
-// router.get("/workouts/:workoutId", async (req, res) => {
-//     try {
-//         const response = await Workout.findById(req.params.workoutId).populate("workoutDetails");
-//         res.status(200).json(response);
-//     }
-//     catch {
-//         res.status(500).json({ message: e });
-//     }
-// });
-
 module.exports = router;
