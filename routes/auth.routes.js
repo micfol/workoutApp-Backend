@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
             username: foundUser.username
         },
         process.env.TOKEN_SECRET,
-        { algorithm: "HS256", expiresIn: "6h" }
+        { algorithm: "HS256", expiresIn: "120h" }
     )
 
     res.status(200).json({ authToken });
