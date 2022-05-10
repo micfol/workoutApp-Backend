@@ -50,22 +50,18 @@ router.get("/workout", async (req, res) => {
     }
 });
 
-
+// POST Route to log the workout entry
 router.post("/exerciseentry", async (req, res) => {
     try {
         const { isWorkoutA, workoutExercises, user } = req.body;
-        
         workoutExercises.forEach((x) => { 
-            x.user = user         // Adds _id to each exercise object.
+            x.user = user         // Adds _id to each exercise object
         });
-
         const responseExercise = await ExerciseType.create(workoutExercises, {new: true}); // Creates 3 new exercies entries
-        
-        const exerciseIDs = responseExercise.map((x) => x._id); //returns array of the 3 created entry _ids.\
-        
+        const exerciseIDs = responseExercise.map((x) => x._id); //returns array of the 3 created entry _ids
         const totalWeightLifted = workoutExercises.map(exercise => exercise.sets)
-
         console.log('totalWeightLifted', totalWeightLifted)
+        console.log('isWorkoutA :>> ', isWorkoutA);
         const responseWorkout = await Workout.create({isWorkoutA, exercises: exerciseIDs, totalWeightLifted: 0, user});
         res.status(200).json({responseExercise, responseWorkout})
     }
@@ -74,18 +70,30 @@ router.post("/exerciseentry", async (req, res) => {
     }
 });
 
+// GET Route to retrieve a user's total logged workouts, and calculate into a percentage of program goal
+// router.get("/progress/:id", async (req, res) => {
+//     try {
+//         const id = req.params.id;
+//         const response = await Workout.countDocuments({ user: id });
+//         const totalWorkouts = response/36 * 100;
+//         console.log('totalWorkouts :>> ', totalWorkouts);
+//         res.status(200).json(totalWorkouts);
+//     }
+//     catch (e) {
+//         res.status(500).json({ message: e });
+//     }
+// });
+
+// GET Route to Populate Total Workout Session Information by User 
 router.get("/progress/:id", async (req, res) => {
-    try {
-        const id = req.params.id
-        const response = await Workout.countDocuments({ user: id })
-        const totalWorkouts = response/36 * 100;
-        console.log('totalWorkouts :>> ', totalWorkouts);
-        res.status(200).json(totalWorkouts);
+    try{
+        const id = req.params.id;
+        const userWorkoutSessions = await Workout.find({ user: id }).populate({path: 'exercises'});
+        res.status(200).json(userWorkoutSessions);
     }
     catch (e) {
         res.status(500).json({ message: e });
     }
 });
-
 
 module.exports = router;

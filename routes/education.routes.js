@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Education = require("../models/Education.model");
 
-//POST Route to create Education Entry
+// POST Route to create Education Entry
 router.post("/education", async (req, res) => {
     try {
         const { nameOfExercise, bodyPart, equipment, target, image, instructions } = req.body;
@@ -17,7 +17,7 @@ router.post("/education", async (req, res) => {
     }
 });
 
-//GET Route to Retrieve All Exercise Education
+// GET Route to Retrieve All Exercise Education
 router.get("/education", async (req, res) => {
     try{
         const response = await Education.find();
