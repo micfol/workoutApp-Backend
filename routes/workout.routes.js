@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Workout = require("../models/Workout.model");
-const ExerciseType = require("../models/ExerciseType.model");
+const Exercise = require("../models/Exercise.model");
+const User = require("../models/User.model")
 
 // POST Route to create Exercise Types
 router.post("/exercisetype", async (req, res) => {
@@ -10,7 +11,7 @@ router.post("/exercisetype", async (req, res) => {
             res.status(400).json({ message: "Incomplete Exercise Data" })
             return;
         }
-        const response = await ExerciseType.create({ exerciseName });
+        const response = await Exercise.create({ exerciseName });
         res.status(200).json(response);
     }
     catch (e) {
@@ -21,7 +22,7 @@ router.post("/exercisetype", async (req, res) => {
 // GET Route to get Exercise Type
 router.get("/exercisetype/:exerciseNameId", async (req, res) => {
     try {
-        const response = await ExerciseType.findById(req.params.exerciseNameId);
+        const response = await Exercise.findById(req.params.exerciseNameId);
         res.status(200).json(response);
     }
     catch {
@@ -31,7 +32,7 @@ router.get("/exercisetype/:exerciseNameId", async (req, res) => {
 
 router.get("/exercisetype", async (req, res) => {
     try {
-        const response = await ExerciseType.find();
+        const response = await Exercise.find();
         res.status(200).json(response);
     }
     catch {
@@ -59,17 +60,21 @@ router.post("/exerciseentry", async (req, res) => {
             x.user = user         // Adds _id to each exercise object.
         });
 
-        const responseExercise = await ExerciseType.create(workoutExercises, {new: true}); // Creates 3 new exercies entries
-        
+        const responseExercise = await Exercise.create(workoutExercises, {new: true}); // Creates 3 new exercies entries
         const exerciseIDs = responseExercise.map((x) => x._id); //returns array of the 3 created entry _ids.\
         
-        const totalWeightLifted = workoutExercises.map(exercise => exercise.sets)
+        // const totalWeightLifted = workoutExercises.map(exercise => exercise.sets)
 
-        console.log('totalWeightLifted', totalWeightLifted)
+        // console.log('totalWeightLifted', totalWeightLifted)
         const responseWorkout = await Workout.create({isWorkoutA, exercises: exerciseIDs, totalWeightLifted: 0, user});
+        
+        const responseUpdateUser = await User.findByIdAndUpdate(user, { $addToSet: { exerciseEntries: exerciseIDs, workoutEntries: responseWorkout._id } }, {new: true} )
+        
+        console.log('3 responses', responseExercise, responseWorkout, responseUpdateUser)
         res.status(200).json({responseExercise, responseWorkout})
     }
     catch (e) {
+        console.log('e', e)
         res.status(500).json({ message: e })
     }
 });
@@ -83,7 +88,8 @@ router.get("/progress/:id", async (req, res) => {
         res.status(200).json(totalWorkouts);
     }
     catch (e) {
-        res.status(500).json({ message: e });
+        console.log('error', e)
+        res.status(500).json({ e });
     }
 });
 
