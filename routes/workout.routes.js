@@ -3,68 +3,26 @@ const Workout = require("../models/Workout.model");
 const Exercise = require("../models/Exercise.model");
 const User = require("../models/User.model")
 
-// POST Route to create Exercise Types
-router.post("/exercisetype", async (req, res) => {
-    try {
-        const { exerciseName } = req.body;
-        if (!exerciseName) {
-            res.status(400).json({ message: "Incomplete Exercise Data" })
-            return;
-        }
-        const response = await Exercise.create({ exerciseName });
-        console.log('response', response)
-        res.status(200).json(response);
+
+// GET Route returns array of all Workout entries of user
+// with individual Exercises populated. Most recent first.
+// ( from api.js / getAllWorkouts(user))
+router.get("/workout/:userId", async (req, res) => {
+    try{
+        const user = req.params.userId;
+        const userWorkoutSessions = await Workout.find({ user: userId }).populate({path: 'exercises'});
+        const sortbyNewest = [...userWorkoutSessions].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
+        res.status(200).json(userWorkoutSessions);
     }
     catch (e) {
-        res.status(500).json({ message: e })
+        console.log('error', e)
+        res.status(500).json({ e });
     }
 });
 
-// DELETE Route to remove an exercise workout session
-router.delete("/workout/:workoutId", async (req, res) => {
-    try {
-        await Workout.findByIdAndDelete(req.params.workoutId);
-        res.status(200).json({ message: `Workout with ID ${req.params.workoutId} was deleted.`});
-    }
-    catch {
-        res.status(500).json({ message: e });
-    }
-});
-
-// // GET Route to get Exercise Type
-// router.get("/exercisetype/:exerciseNameId", async (req, res) => {
-//     try {
-//         const response = await Exercise.findById(req.params.exerciseNameId);
-//         res.status(200).json(response);
-//     }
-//     catch {
-//         res.status(500).json({ message: e });
-//     }
-// });
-
-// router.get("/exercisetype", async (req, res) => {
-//     try {
-//         const response = await Exercise.find();
-//         res.status(200).json(response);
-//     }
-//     catch {
-//         res.status(500).json({ message: e });
-//     }
-// });
-
-// GET Route for the array of exercises
-router.get("/workout", async (req, res) => {
-    try {
-        const response = await Workout.find();
-        res.status(200).json(response);
-    }
-    catch (e) {
-        res.status(500).json({ message: e });
-    }
-});
-
-// POST Route to log the workout entry
-router.post("/exerciseentry", async (req, res) => {
+// POST Route to log the workout entry 
+//(from api.js / addWorkout(workoutObj))
+router.post("/workout", async (req, res) => {
     try {
         const { isWorkoutA, workoutExercises, user } = req.body;
         console.log('req.body', req.body)
@@ -91,18 +49,16 @@ router.post("/exerciseentry", async (req, res) => {
     }
 });
 
-// GET Route to Populate Total Workout Session Information by User 
-router.get("/progress/:id", async (req, res) => {
-    try{
-        const id = req.params.id;
-        const userWorkoutSessions = await Workout.find({ user: id }).populate({path: 'exercises'});
-        const sortbyNewest = [...userWorkoutSessions].sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
-        res.status(200).json(userWorkoutSessions);
+
+// DELETE Route to remove a workout  
+// (from api.js / deleteWorkout(workoutId))
+router.delete("/workout/:workoutId", async (req, res) => {
+    try {
+        await Workout.findByIdAndDelete(req.params.workoutId);
+        res.status(200).json({ message: `Workout with ID ${req.params.workoutId} was deleted.`});
     }
-    catch (e) {
-        console.log('error', e)
-        res.status(500).json({ e });
+    catch {
+        res.status(500).json({ message: e });
     }
 });
-
 module.exports = router;
