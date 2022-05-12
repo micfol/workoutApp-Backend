@@ -69,7 +69,7 @@ router.post("/login", async (req, res) => {
         { algorithm: "HS256", expiresIn: "120h" }
     )
 
-    res.status(200).json({ authToken });
+    res.status(200).json({ authToken});
 
 });
 

@@ -12,6 +12,7 @@ router.post("/exercisetype", async (req, res) => {
             return;
         }
         const response = await Exercise.create({ exerciseName });
+        console.log('response', response)
         res.status(200).json(response);
     }
     catch (e) {
@@ -55,6 +56,7 @@ router.get("/workout", async (req, res) => {
 router.post("/exerciseentry", async (req, res) => {
     try {
         const { isWorkoutA, workoutExercises, user } = req.body;
+        console.log('req.body', req.body)
         workoutExercises.forEach((x) => { 
             x.user = user         // Adds _id to each exercise object
         });
@@ -66,13 +68,10 @@ router.post("/exerciseentry", async (req, res) => {
 
         // console.log('totalWeightLifted', totalWeightLifted)
         const totalWeightLifted = workoutExercises.map(exercise => exercise.sets)
-        console.log('totalWeightLifted', totalWeightLifted)
-        console.log('isWorkoutA :>> ', isWorkoutA);
-        const responseWorkout = await Workout.create({isWorkoutA, exercises: exerciseIDs, totalWeightLifted: 0, user});
+          const responseWorkout = await Workout.create({isWorkoutA, exercises: exerciseIDs, totalWeightLifted: 0, user});
         
         const responseUpdateUser = await User.findByIdAndUpdate(user, { $addToSet: { exerciseEntries: exerciseIDs, workoutEntries: responseWorkout._id } }, {new: true} ).populate('workoutEntries')
         
-        console.log('3 responses', responseExercise, responseWorkout, responseUpdateUser)
         res.status(200).json({responseUpdateUser})
     }
     catch (e) {
@@ -100,9 +99,7 @@ router.get("/progress/:id", async (req, res) => {
     try{
         const id = req.params.id;
         const userWorkoutSessions = await Workout.find({ user: id }).populate({path: 'exercises'});
-        console.log('userWorkoutSessions', userWorkoutSessions)
-        const sortbyNewest = [...userWorkoutSessions].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
-        console.log('sortbyNewest', sortbyNewest)
+        const sortbyNewest = [...userWorkoutSessions].sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
         res.status(200).json(userWorkoutSessions);
     }
     catch (e) {
