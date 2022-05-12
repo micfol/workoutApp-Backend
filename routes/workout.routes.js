@@ -20,26 +20,37 @@ router.post("/exercisetype", async (req, res) => {
     }
 });
 
-// GET Route to get Exercise Type
-router.get("/exercisetype/:exerciseNameId", async (req, res) => {
+// DELETE Route to remove an exercise workout session
+router.delete("/workout/:workoutId", async (req, res) => {
     try {
-        const response = await Exercise.findById(req.params.exerciseNameId);
-        res.status(200).json(response);
+        await Workout.findByIdAndDelete(req.params.workoutId);
+        res.status(200).json({ message: `Workout with ID ${req.params.workoutId} was deleted.`});
     }
     catch {
         res.status(500).json({ message: e });
     }
 });
 
-router.get("/exercisetype", async (req, res) => {
-    try {
-        const response = await Exercise.find();
-        res.status(200).json(response);
-    }
-    catch {
-        res.status(500).json({ message: e });
-    }
-});
+// // GET Route to get Exercise Type
+// router.get("/exercisetype/:exerciseNameId", async (req, res) => {
+//     try {
+//         const response = await Exercise.findById(req.params.exerciseNameId);
+//         res.status(200).json(response);
+//     }
+//     catch {
+//         res.status(500).json({ message: e });
+//     }
+// });
+
+// router.get("/exercisetype", async (req, res) => {
+//     try {
+//         const response = await Exercise.find();
+//         res.status(200).json(response);
+//     }
+//     catch {
+//         res.status(500).json({ message: e });
+//     }
+// });
 
 // GET Route for the array of exercises
 router.get("/workout", async (req, res) => {
@@ -79,20 +90,6 @@ router.post("/exerciseentry", async (req, res) => {
         res.status(500).json({ message: e })
     }
 });
-
-// GET Route to retrieve a user's total logged workouts, and calculate into a percentage of program goal
-// router.get("/progress/:id", async (req, res) => {
-//     try {
-//         const id = req.params.id;
-//         const response = await Workout.countDocuments({ user: id });
-//         const totalWorkouts = response/36 * 100;
-//         console.log('totalWorkouts :>> ', totalWorkouts);
-//         res.status(200).json(totalWorkouts);
-//     }
-//     catch (e) {
-//         res.status(500).json({ message: e });
-//     }
-// });
 
 // GET Route to Populate Total Workout Session Information by User 
 router.get("/progress/:id", async (req, res) => {
