@@ -77,7 +77,9 @@ router.get("/progress/:id", async (req, res) => {
     try{
         const id = req.params.id;
         const userWorkoutSessions = await Workout.find({ user: id }).populate({path: 'exercises'});
-        res.status(200).json(userWorkoutSessions);
+        const sortedbyNewest = [...userWorkoutSessions].sort((a,b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
+        console.log('sortbyNewest', sortedbyNewest)
+        res.status(200).json(sortedbyNewest);
     }
     catch (e) {
         console.log('error', e)
