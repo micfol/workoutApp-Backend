@@ -9,10 +9,10 @@ const User = require("../models/User.model")
 // ( from api.js / getAllWorkouts(user))
 router.get("/workout/:userId", async (req, res) => {
     try{
-        const user = req.params.userId;
+        const userId = req.params.userId;
         const userWorkoutSessions = await Workout.find({ user: userId }).populate({path: 'exercises'});
         const sortbyNewest = [...userWorkoutSessions].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
-        res.status(200).json(userWorkoutSessions);
+        res.status(200).json(sortbyNewest);
     }
     catch (e) {
         console.log('error', e)
