@@ -62,6 +62,18 @@ router.get("/workout", async (req, res) => {
     }
 });
 
+router.get("/workingweight/:user", async (req, res) => {
+    try {
+        const response = await User.findById(req.params.user);
+        const {squat, row, bench, military, deadlift} = response
+        const workingWeight = {squat, row, bench, military, deadlift}
+        res.status(200).json(workingWeight);
+    }
+    catch (e) {
+        res.status(500).json({ message: e });
+    }
+});
+
 // POST Route to log the workout entry
 router.post("/exerciseentry", async (req, res) => {
     try {
