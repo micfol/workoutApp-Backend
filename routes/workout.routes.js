@@ -30,26 +30,6 @@ router.delete("/workout/:workoutId", async (req, res) => {
     }
 });
 
-// // GET Route to get Exercise Type
-// router.get("/exercisetype/:exerciseNameId", async (req, res) => {
-//     try {
-//         const response = await Exercise.findById(req.params.exerciseNameId);
-//         res.status(200).json(response);
-//     }
-//     catch {
-//         res.status(500).json({ message: e });
-//     }
-// });
-
-// router.get("/exercisetype", async (req, res) => {
-//     try {
-//         const response = await Exercise.find();
-//         res.status(200).json(response);
-//     }
-//     catch {
-//         res.status(500).json({ message: e });
-//     }
-// });
 
 // GET Route for the array of exercises
 router.get("/workout", async (req, res) => {
