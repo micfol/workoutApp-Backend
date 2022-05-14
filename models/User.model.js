@@ -8,7 +8,13 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     email: String,
     workoutEntries: [{ type: Schema.Types.ObjectId, ref: 'Workouts' }],
-    exerciseEntries: [{ type: Schema.Types.ObjectId, ref: 'ExerciseType' }]
+    exerciseEntries: [{ type: Schema.Types.ObjectId, ref: 'ExerciseType' }],
+    squat: { type: Number, default: 20},
+    bench: { type: Number, default: 20},
+    row: { type: Number, default: 30},
+    military: { type: Number, default: 20},
+    deadlift: { type: Number, default: 40}
+
   },
   {
     timestamps: true,
