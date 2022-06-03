@@ -44,6 +44,7 @@ router.get("/workout", async (req, res) => {
 
 router.get("/workingweight/:user", async (req, res) => {
     try {
+        
         const response = await User.findById(req.params.user);
         const {squat, row, bench, military, deadlift} = response
         const workingWeight = {squat, row, bench, military, deadlift}
@@ -58,7 +59,7 @@ router.get("/workingweight/:user", async (req, res) => {
 router.post("/exerciseentry", async (req, res) => {
     try {
         const { isWorkoutA, workoutExercises, user } = req.body;
-       const exercises = workoutExercises.map((exercise) => {
+        const exercises = workoutExercises.map((exercise) => {
             return {...exercise[1], user: user} 
         })
         const weightIncrease = {
@@ -68,16 +69,16 @@ router.post("/exerciseentry", async (req, res) => {
             military: 2.5,
             deadlift: 5
         }
-        console.log('workoutExercises', workoutExercises)
+        // console.log('workoutExercises', workoutExercises)
         const workingWeight = workoutExercises.map((exercise) => {
             if (exercise[1].sets.every(set => set === 5)) {
                 exercise[1].weight = exercise[1].weight + weightIncrease[exercise[0]]
             }
             return [exercise[0], exercise[1].weight]
         })
-        console.log('workingWeight', workingWeight)
+        // console.log('workingWeight', workingWeight)
         const workingWeightSquats = Object.fromEntries(workingWeight)
-        console.log('workingWeightSquats', workingWeightSquats)
+        // console.log('workingWeightSquats', workingWeightSquats)
         
         const responseExercise = await Exercise.create(exercises, { new: true }); // Creates 3 new exercies entries
         const exerciseIDs = responseExercise.map((x) => x._id); //returns array of the 3 created entry _ids.\
