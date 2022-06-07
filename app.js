@@ -20,10 +20,12 @@ app.use("/api", workoutRoutes);
 const educationRoutes = require("./routes/education.routes");
 app.use("/api", educationRoutes);
 
-require("./error-handling")(app);
-
 app.use((req, res, next) => {
     res.sendFile(__dirname + "/public/index.html");
   });
+  
+require("./error-handling")(app);
+
+
 
 module.exports = app;
