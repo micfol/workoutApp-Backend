@@ -8,6 +8,9 @@ const app = express();
 
 require("./config")(app);
 
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
 const allRoutes = require("./routes/index.routes");
 app.use("/api", allRoutes);
 
@@ -20,10 +23,10 @@ app.use("/api", workoutRoutes);
 const educationRoutes = require("./routes/education.routes");
 app.use("/api", educationRoutes);
 
-
+app.use((req, res, next) => {
+    res.sendFile(__dirname + "/public/index.html");
+  });
   
 require("./error-handling")(app);
-
-
 
 module.exports = app;
