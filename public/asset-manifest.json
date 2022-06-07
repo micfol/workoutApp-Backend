@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.de428898.css",
+    "main.js": "/static/js/main.0dd2bfbd.js",
+    "static/js/787.498a8c9d.chunk.js": "/static/js/787.498a8c9d.chunk.js",
+    "static/media/rainbow-bear.gif": "/static/media/rainbow-bear.ba68e71b5ef75714d9e9.gif",
+    "index.html": "/index.html",
+    "main.de428898.css.map": "/static/css/main.de428898.css.map",
+    "main.0dd2bfbd.js.map": "/static/js/main.0dd2bfbd.js.map",
+    "787.498a8c9d.chunk.js.map": "/static/js/787.498a8c9d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.de428898.css",
+    "static/js/main.0dd2bfbd.js"
+  ]
+}
